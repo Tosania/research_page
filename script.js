@@ -31,22 +31,36 @@ const renderLinks = (links) =>
     })
     .join("");
 
+const renderPublicationLinks = (links = []) => {
+  if (!links.length) {
+    return "";
+  }
+
+  return `<p class="publication-links">${renderLinks(links)}</p>`;
+};
+
 const renderContactList = () => {
   const items = [
-    { label: data.profile.location, href: "" },
-    { label: "Email", href: `mailto:${data.profile.email}` },
-    { label: "GitHub", href: data.profile.github },
-    { label: "Website", href: data.profile.website },
+    { label: "Location", value: data.profile.location, href: "" },
+    { label: "Email", value: data.profile.email, href: `mailto:${data.profile.email}` },
+    { label: "GitHub", value: "Tosania", href: data.profile.github },
+    { label: "Website", value: "tosania.top", href: data.profile.website },
   ];
 
   return items
     .map((item) => {
+      const content = `
+        <span class="contact-label">${item.label}</span>
+        <span class="contact-value">${item.value}</span>
+      `;
+
       if (!item.href) {
-        return `<p>${item.label}</p>`;
+        return `<p>${content}</p>`;
       }
+
       const external =
         item.href.startsWith("http") ? ' target="_blank" rel="noreferrer"' : "";
-      return `<a href="${item.href}"${external}>${item.label}</a>`;
+      return `<a href="${item.href}"${external}>${content}</a>`;
     })
     .join("");
 };
@@ -54,16 +68,32 @@ const renderContactList = () => {
 const renderBio = (items) =>
   items.map((item) => `<p>${item}</p>`).join("");
 
+const renderPublicationImage = (item) => {
+  if (!item.image) {
+    return "";
+  }
+
+  return `
+    <figure class="publication-media">
+      <img src="${item.image}" alt="${item.imageAlt || item.title}" />
+    </figure>
+  `;
+};
+
 const renderPublications = (items) =>
-  items
+  [...items]
+    .reverse()
     .map(
       (item) => `
-        <article class="publication-item">
-          <p class="publication-title">${item.title}</p>
-          <p>${item.authors}</p>
-          <p>${item.venue}</p>
-          <p>${item.note}</p>
-          <p class="publication-links">${renderLinks(item.links)}</p>
+        <article class="publication-item${item.image ? "" : " no-media"}">
+          ${renderPublicationImage(item)}
+          <div class="publication-body">
+            <h3 class="publication-title">${item.title}</h3>
+            <p class="publication-authors">${item.authors}</p>
+            <p class="publication-venue">${item.venue}</p>
+            <p class="publication-note">${item.note}</p>
+            ${renderPublicationLinks(item.links)}
+          </div>
         </article>
       `
     )

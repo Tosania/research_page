@@ -26,11 +26,17 @@ body {
 a {
   color: var(--link);
   text-decoration: none;
+  text-underline-offset: 0.18em;
 }
 
 a:hover,
 a:focus-visible {
   text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid rgba(42, 125, 184, 0.24);
+  outline-offset: 3px;
 }
 
 .topbar {
@@ -94,6 +100,7 @@ a:focus-visible {
 }
 
 .avatar {
+  display: block;
   object-fit: cover;
 }
 
@@ -133,16 +140,58 @@ a:focus-visible {
 }
 
 .contact-list {
-  margin-top: 18px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
 }
 
 .contact-list a,
 .contact-list p {
-  display: block;
+  display: grid;
+  gap: 2px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.contact-list a:last-child,
+.contact-list p:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.contact-list a:hover,
+.contact-list a:focus-visible {
+  text-decoration: none;
+}
+
+.contact-list a:hover .contact-value,
+.contact-list a:focus-visible .contact-value {
+  text-decoration: underline;
+}
+
+.contact-label {
+  color: #888888;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.contact-value {
+  overflow-wrap: anywhere;
+  color: #4b4b4b;
+  font-size: 0.98rem;
+}
+
+.contact-list a .contact-value {
+  color: var(--link);
 }
 
 .content {
   min-width: 0;
+  max-width: 820px;
 }
 
 .content-section + .content-section {
@@ -163,28 +212,111 @@ a:focus-visible {
   margin-bottom: 0;
 }
 
+.paragraphs p,
+.publication-title,
+.contact-note {
+  overflow-wrap: anywhere;
+}
+
 .interests-line {
   margin-top: 8px;
 }
 
 .publication-list {
   display: grid;
-  gap: 18px;
+  gap: 26px;
 }
 
 .publication-item {
-  padding-bottom: 16px;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+  padding-bottom: 26px;
   border-bottom: 1px solid var(--border);
 }
 
+.publication-item.no-media {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.publication-media {
+  margin: 0;
+}
+
+.publication-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #ffffff;
+  object-fit: contain;
+}
+
+.publication-body {
+  min-width: 0;
+}
+
 .publication-title {
+  margin: 0 0 8px;
+  color: #1f6fc8;
+  font-size: 1.18rem;
   font-weight: 700;
+  line-height: 1.45;
+}
+
+.publication-authors,
+.publication-venue,
+.publication-note {
+  margin-bottom: 7px;
   color: #333333;
+  line-height: 1.55;
+}
+
+.publication-authors strong {
+  color: #222222;
+  font-weight: 700;
+}
+
+.publication-authors sup {
+  font-size: 0.72em;
+  line-height: 0;
+}
+
+.author-marker {
+  color: var(--link);
+  cursor: help;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.16em;
+}
+
+.author-marker:hover,
+.author-marker:focus-visible {
+  color: #155f91;
+}
+
+.publication-venue {
+  color: #222222;
+}
+
+.publication-note {
+  color: var(--muted);
 }
 
 .publication-links a + a::before {
-  content: " · ";
+  content: " | ";
   color: var(--muted);
+}
+
+.publication-links {
+  margin-top: 12px;
+}
+
+.publication-links a {
+  font-size: 1rem;
 }
 
 .reveal {
@@ -198,6 +330,18 @@ a:focus-visible {
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 860px) {
@@ -223,12 +367,21 @@ a:focus-visible {
 
   .sidebar {
     position: static;
-    margin-bottom: 32px;
+    margin-bottom: 34px;
   }
 
   .avatar,
   .avatar-fallback {
     width: 120px;
     height: 120px;
+  }
+
+  .publication-item {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .publication-media img {
+    max-width: 420px;
   }
 }
